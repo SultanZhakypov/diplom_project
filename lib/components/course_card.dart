@@ -1,0 +1,153 @@
+import 'package:flutter/material.dart';
+
+class CourseCard extends StatelessWidget {
+  String courseImage;
+  String courseName;
+  String? mentorName;
+  String totalVideo;
+  String totalTime;
+  double? rating;
+
+  CourseCard(
+      {super.key,
+      required this.courseImage,
+      required this.courseName,
+      this.mentorName,
+      this.rating,
+      required this.totalTime,
+      required this.totalVideo});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 116,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.blue,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.expand,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.network(
+                      courseImage,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, Object exception, stackTrace) {
+                        return Image.asset(
+                          'assets/empty_image.png',
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    left: 8,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                      ),
+                      width: 36,
+                      height: 18,
+                      child: FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Icon(Icons.star,
+                                color: Colors.amber, size: 16),
+                            Text('$rating'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              width: 100,
+              height: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    courseName,
+                    style: const TextStyle(fontSize: 18),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  Row(
+                    children: [
+                      GreenChipWidget(
+                        icon: Icons.timelapse,
+                        label: totalTime,
+                      ),
+                      const SizedBox(width: 8),
+                      GreenChipWidget(
+                        icon: Icons.videocam,
+                        label: '$totalVideo Video',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class GreenChipWidget extends StatelessWidget {
+  GreenChipWidget({super.key, required this.icon, required this.label});
+
+  IconData icon;
+  String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: const Color.fromARGB(255, 54, 47, 84),
+      ),
+      width: 74,
+      height: 20,
+      child: FittedBox(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(icon, color: Theme.of(context).primaryColor, size: 16),
+            Text(
+              label,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
